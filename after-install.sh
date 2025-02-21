@@ -1,3 +1,4 @@
+USR_SHELL=$(grep $(id -u) /etc/passwd | grep -E '[a-z]*sh' -o)
 sudo pacman -Sy pciutils
 if [[ $(lspci -d 106B: | wc -l) -gt 0 ]]; then # 106b is vendor id of apple, lspci is pretty much everywhere so let's just use that idk
   echo 'found apple'
@@ -19,8 +20,16 @@ cd $PARU_PATH
 makepkg -si
 rm -rf $PARU_PATH
 cd $WD
-paru -Syu parui gnome gnome-tweaks ranger firefox tmux neovim kitty bat devtools --noconfirm
+paru -Syu parui gnome gnome-tweaks ranger firefox tmux neovim kitty bat devtools fzf refind --noconfirm
+sudo refind-install
 if [[ $(ps -ax | grep gdm | wc -l) -gt 6 ]]; then
   sudo systemctl enable --now gdm
 fi
 git clone https://github.com/LazyVim/starter $HOME/.config/nvim
+
+if [[ $USR_SHELL -eq "bash" ]]; then
+  echo 'eval "$(fzf --bash)"' >>~/.bashrc
+
+elif [[ $USR_SHELL -eq "zsh" ]]; then
+  echo 'eval "$(fzf --zsh)"' >>~/.zshrc
+fi
