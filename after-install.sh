@@ -25,7 +25,9 @@ sudo refind-install
 if [[ $(ps -ax | grep gdm | wc -l) -gt 6 ]]; then
   sudo systemctl enable --now gdm
 fi
+
 git clone https://github.com/LazyVim/starter $HOME/.config/nvim
+git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins
 
 if [[ $USR_SHELL -eq "bash" ]]; then
   echo 'eval "$(fzf --bash)"' >>~/.bashrc
