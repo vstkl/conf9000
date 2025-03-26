@@ -15,7 +15,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme="base16-ayu-dark"
+      colorscheme="base16-framer"
     }
   },
 
@@ -63,17 +63,7 @@ return {
   },
 
   -- add pyright to lspconfig
-  {
-    "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {},
-      },
-    },
-  },
+
 
   -- add tsserver and setup with typescript.nvim instead of lspconfig
   {
@@ -90,10 +80,11 @@ return {
     },
     ---@class PluginLspOpts
     opts = {
-      ---@type lspconfig.options
+    ---@type lspconfig.options
       servers = {
         -- tsserver will be automatically installed with mason and loaded with lspconfig
         tsserver = {},
+        pyright = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
@@ -107,6 +98,7 @@ return {
         -- Specify * to use this function as a fallback for any server
         -- ["*"] = function(server, opts) end,
       },
+
     },
   },
 
@@ -133,6 +125,9 @@ return {
         "typescript",
         "vim",
         "yaml",
+        "css",
+        "less",
+        "sass"
       },
     },
   },
@@ -146,40 +141,21 @@ return {
       -- add tsx and treesitter
       vim.list_extend(opts.ensure_installed, {
         "tsx",
-        "typescript",
+         "typescript",
+        "python",
       })
     end,
   },
 
-  -- the opts function can also be used to change the default opts:
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function(_, opts)
-      table.insert(opts.sections.lualine_x, {
-        function()
-          return "😄"
-        end,
-      })
-    end,
-  },
-
-  -- or you can return new options to override all the defaults
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    opts = function()
-      return {
-        --[[add your custom lualine config here]]
-      }
-    end,
-  },
 
   -- use mini.starter instead of alpha
   { import = "lazyvim.plugins.extras.ui.mini-starter" },
 
   -- add jsonls and schemastore packages, and setup treesitter for json, json5 and jsonc
   { import = "lazyvim.plugins.extras.lang.json" },
+  { import = "lazyvim.plugins.extras.lang.json" },
+
+  { import = "lazyvim.plugins.extras.lang.python" },
 
   -- add any tools you want to have installed below
   {
@@ -192,96 +168,83 @@ return {
         "flake8",
       },
     },
-   
   },
   {
-  "epwalsh/obsidian.nvim",
-  version = "*",  -- recommended, use latest release instead of latest commit
-  lazy = true,
-  ft = "markdown",
-  -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-  -- event = {
-  --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-  --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-  --   -- refer to `:h file-pattern` for more examples
-  --   "BufReadPre path/to/my-vault/*.md",
-  --   "BufNewFile path/to/my-vault/*.md",
-  -- },
-  dependencies = {
-    -- Required.
-    "nvim-lua/plenary.nvim",
+    "epwalsh/obsidian.nvim",
+    version = "*",  -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = "markdown",
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+    --   -- refer to `:h file-pattern` for more examples
+    --   "BufReadPre path/to/my-vault/*.md",
+    --   "BufNewFile path/to/my-vault/*.md",
+    -- },
+    dependencies = {
+      -- Required.
+      "nvim-lua/plenary.nvim",
 
-    -- see below for full list of optional dependencies 👇
-  },
-  opts = {
-    workspaces = {
-      {
-        name = "personal",
-        path = "~/vaults/personal",
-      },
-      {
-        name = "work",
-        path = "~/vaults/work",
-      },
+      -- see below for full list of optional dependencies 👇
     },
--- Lua
-    {
-      "folke/persistence.nvim",
-      event = "BufReadPre", -- this will only start session saving when an actual file was opened
-      opts = {
-        -- add any custom options here
-      }
+  },
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre", -- this will only start session saving when an actual file was opened
+    opts = {
+      -- add any custom options here
     }
-    -- see below for full list of options 👇
   },
-{
-  "MeanderingProgrammer/render-markdown.nvim",
-  opts = {
-    code = {
-      sign = false,
-      width = "block",
-      right_pad = 1,
+ 
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    opts = {
+      code = {
+        sign = false,
+        width = "block",
+        right_pad = 1,
+      },
+      heading = {
+        sign = false,
+        icons = {},
+      },
+      checkbox = {
+        enabled = false,
+      },
+      render_modes = {'n','c','v'},
+      win_options = {
+          conceallevel = {
+              default = vim.api.nvim_get_option_value('conceallevel', {}),
+              rendered = 3,
+          },
+          concealcursor = {
+              default = vim.api.nvim_get_option_value('concealcursor', {}),
+              rendered = '',
+          },
+      },
+      anti_conceal = { enabled = true },
     },
-    heading = {
-      sign = false,
-      icons = {},
-    },
-    checkbox = {
-      enabled = false,
-    },
-    render_modes = {'n','c','v'},
-    win_options = {
-        conceallevel = {
-            default = vim.api.nvim_get_option_value('conceallevel', {}),
-            rendered = 3,
-        },
-        concealcursor = {
-            default = vim.api.nvim_get_option_value('concealcursor', {}),
-            rendered = '',
-        },
-    },
-    anti_conceal = { enabled = true },
+    ft = { "markdown", "norg", "rmd", "org", "codecompanion" },
+    config = function(_, opts)
+      require("render-markdown").setup(opts)
+      Snacks.toggle({
+        name = "Render Markdown",
+        get = function()
+          return require("render-markdown.state").enabled
+        end,
+        set = function(enabled)
+          local m = require("render-markdown")
+          if enabled then
+            m.enable()
+          else
+            m.disable()
+          end
+        end,
+      }):map("<leader>um")
+    end,
   },
-  ft = { "markdown", "norg", "rmd", "org", "codecompanion" },
-  config = function(_, opts)
-    require("render-markdown").setup(opts)
-    Snacks.toggle({
-      name = "Render Markdown",
-      get = function()
-        return require("render-markdown.state").enabled
-      end,
-      set = function(enabled)
-        local m = require("render-markdown")
-        if enabled then
-          m.enable()
-        else
-          m.disable()
-        end
-      end,
-    }):map("<leader>um")
-  end,
-},
- {
+  {
     "3rd/image.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -321,5 +284,89 @@ return {
       kitty_method = "normal",
     },
   },
-}
-}
+  {
+  "mfussenegger/nvim-dap",
+  recommended = true,
+  desc = "Debugging support. Requires language specific adapters to be configured. (see lang extras)",
+
+  dependencies = {
+    "rcarriga/nvim-dap-ui",
+    "nvim-dap-python",
+    -- virtual text for the debugger
+    {
+      "theHamsta/nvim-dap-virtual-text",
+      opts = {},
+    },
+  },
+
+  -- stylua: ignore
+  keys = {
+    { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+    { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+    { "<leader>dc", function() require("dap").continue() end, desc = "Run/Continue" },
+    { "<leader>da", function() require("dap").continue({ before = get_args }) end, desc = "Run with Args" },
+    { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+    { "<leader>dg", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
+    { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
+    { "<leader>dj", function() require("dap").down() end, desc = "Down" },
+    { "<leader>dk", function() require("dap").up() end, desc = "Up" },
+    { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
+    { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
+    { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
+    { "<leader>dP", function() require("dap").pause() end, desc = "Pause" },
+    { "<leader>dr", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+    { "<leader>ds", function() require("dap").session() end, desc = "Session" },
+    { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
+    { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+  },
+
+  config = function()
+    -- load mason-nvim-dap here, after all adapters have been setup
+    if LazyVim.has("mason-nvim-dap.nvim") then
+      require("mason-nvim-dap").setup(LazyVim.opts("mason-nvim-dap.nvim"))
+    end
+    vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+    for name, sign in pairs(LazyVim.config.icons.dap) do
+      sign = type(sign) == "table" and sign or { sign }
+      vim.fn.sign_define(
+        "Dap" .. name,
+        { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
+      )
+    end
+
+    -- setup dap config by VsCode launch.json file
+    local vscode = require("dap.ext.vscode")
+    local json = require("plenary.json")
+    vscode.json_decode = function(str)
+      return vim.json.decode(json.json_strip_comments(str))
+    end
+  end,
+},
+
+  -- Simple, minimal Lazy.nvim configuration
+  -- Simple, minimal Lazy.nvim configuration
+  --   -- Simple, minimal Lazy.nvim configuration
+{
+  "huynle/ogpt.nvim",
+    event = "VeryLazy",
+    opts = {
+      default_provider = "openrouter",
+
+      model = "deepseek/deepseek-chat-v3-0324:free",
+      edgy = true, -- enable this!
+      single_window = false, -- set this to true if you want only one OGPT window to appear at a time
+      providers = {
+        openrouter = {
+          api_host = "https://openrouter.ai/api/v1/chat/completions ",
+          api_key = "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",
+        },
+        enable = true
+      }
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+},
+ }
