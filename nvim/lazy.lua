@@ -1,5 +1,7 @@
 return {
-	lazy = "lazynvim.plugins",
+
+	{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
+	{ import = "plugins" },
 	checker = {
 		enabled = true,
 		notify = false,
