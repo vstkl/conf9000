@@ -11,6 +11,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	})
 end
 vim.opt.rtp:prepend(lazypath)
+-- vim.opt.mouse = "a"
 
 require("config.keymaps")
 require("config.options")
@@ -19,3 +20,5 @@ require("lazy").setup({
 	{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
 	{ import = "plugins" },
 })
+
+require("borderline.api").borderline("diff")
