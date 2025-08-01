@@ -1,0 +1,3 @@
+[submodule "tmux/plugins/base16-tmux"]
+	path = tmux/plugins/base16-tmux
+	url = https://github.com/tinted-theming/tinted-tmux
