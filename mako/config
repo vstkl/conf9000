@@ -1,0 +1,41 @@
+#background-color=#00000088
+default-timeout=15000
+anchor=top-center
+layer=overlay
+width=400
+border-size=0
+
+[urgency=high]
+border-color=#ff0000
+border-size=5
+
+[category=bat]
+background-color=#ff0000aa
+#border-radius=20
+#border-size=5
+default-timeout=0
+text-alignment=center
+
+[category=volume]
+layer=overlay
+width=800
+history=0
+# Group all volume notifications together
+group-by=app-name
+# Hide the group-index
+format=<b>%s</b>\n%b
+progress-color=#f1c40f
+text-color=#000000
+
+[app-name=volume group-index=0]
+# Only show last notification
+invisible=0
+
+[app-name=brightness]
+layer=overlay
+width=800
+history=0
+group-by=app-name
+format=<b>%s</b>\n%b
+progress-color=#0000ffaa
+

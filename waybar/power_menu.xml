@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+	<child>
+		<object class="GtkImageMenuItem" id="shutdown">
+			<child>
+				<object class="GtkLabel">
+				  <property name="label">Shutdown</property>
+			  </object>
+			</child>
+			<child>
+			  <object class="GtkImage">
+				<property name="icon-name">system-shutdown</property>
+			  </object>
+			</child>
+		</object>
+    </child>
+		<child>
+		<object class="GtkImageMenuItem" id="reboot">
+			<child>
+				<object class="GtkLabel">
+				  <property name="label">Reboot</property>
+			  </object>
+				</child>
+			<child>
+			  <object class="GtkImage">
+				<property name="icon-name">system-reboot</property>
+			  </object>
+			</child>
+		</object>
+    </child>
+		<child>
+		<object class="GtkImageMenuItem" id="hibernate">
+			<child>
+				<object class="GtkLabel">
+				  <property name="label">Hibernate</property>
+			  </object>
+				</child>
+			<child>
+			  <object class="GtkImage">
+				<property name="icon-name">system-hibernate</property>
+			  </object>
+			</child>
+		</object>
+    </child>
+		<child>
+		<object class="GtkImageMenuItem" id="suspend">
+			<child>
+				<object class="GtkLabel">
+				  <property name="label">Suspend</property>
+			  </object>
+			</child>
+			<child>
+			  <object class="GtkImage">
+				<property name="icon-name">system-suspend</property>
+			  </object>
+			</child>
+		</object>
+    </child>
+  </object>
+</interface>
