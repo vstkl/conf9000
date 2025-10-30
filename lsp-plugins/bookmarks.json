@@ -1,0 +1,56 @@
+/*
+ * This file contains list of bookmarked directories.
+ * 
+ */
+[
+    {
+        "path": "/home/m/junk",
+        "name": "junk",
+        "origin": ["lsp", "gtk3"]
+    },
+    {
+        "path": "/home/m/share",
+        "name": "share",
+        "origin": ["lsp", "gtk3"]
+    },
+    {
+        "path": "/home/m/documents",
+        "name": "documents",
+        "origin": ["lsp", "gtk3", "qt5"]
+    },
+    {
+        "path": "/home/m/proj",
+        "name": "proj",
+        "origin": ["lsp", "gtk3"]
+    },
+    {
+        "path": "/home/m/videos",
+        "name": "videos",
+        "origin": ["lsp", "gtk3", "qt5"]
+    },
+    {
+        "path": "/home/m/downloads",
+        "name": "downloads",
+        "origin": ["lsp", "gtk3", "qt5"]
+    },
+    {
+        "path": "/home/m",
+        "name": "Home",
+        "origin": ["lsp", "qt5"]
+    },
+    {
+        "path": "/home/m/desktop",
+        "name": "Desktop",
+        "origin": ["lsp", "qt5"]
+    },
+    {
+        "path": "/home/m/music",
+        "name": "Music",
+        "origin": ["lsp", "qt5"]
+    },
+    {
+        "path": "/home/m/pictures",
+        "name": "Pictures",
+        "origin": ["lsp", "qt5"]
+    }
+]

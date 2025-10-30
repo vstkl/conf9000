@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 COLOR_SCHEME_PATH=$HOME/.config/color.scheme
-COLOR=$(cat $COLOR_SCHEME_PATH)
+COLOR=$(cat $COLOR_SCHEME_PATH | sed '/^#.*/d' | head -n1)
 ENV_NAME="BASE16_THEME"
 function paint() {
 	TARGET=$1

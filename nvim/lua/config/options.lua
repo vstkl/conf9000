@@ -9,15 +9,15 @@ opt.signcolumn = "yes" -- Show sign column
 opt.wrap = true -- Wrap lines
 
 -- Indentation and tabs
-opt.tabstop = 4 -- Tab width is 4 spaces
-opt.softtabstop = 4 -- Soft tabstop is also 4 spaces
-opt.shiftwidth = 4 -- Shifting uses 4 spaces
+opt.tabstop = 2 -- Tab width is 4 spaces
+opt.softtabstop = 2 -- Soft tabstop is also 4 spaces
+opt.shiftwidth = 2 -- Shifting uses 4 spaces
 opt.expandtab = true -- Expand tabs to spaces
 
 -- File handling
 opt.swapfile = false -- Do not create swap files
 opt.backup = false -- Do not create backup files
-opt.undodir = "/home/m/.config/nvim/undodir" -- Save undo history
+opt.undodir = vim.env.HOME .. "/.local/share/nvim/undodir" -- Save undo history
 opt.undofile = true -- Enable undo persistence
 
 -- Search and performance
@@ -42,3 +42,5 @@ opt.sidescrolloff = 5 -- Keep 5 columns between cursor and edge
 opt.belloff = "all" -- Disable all bells
 opt.updatetime = 50 -- Faster updates
 opt.lazyredraw = false -- Enable lazy redrawing
+
+opt.textwidth = 200

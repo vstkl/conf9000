@@ -20,3 +20,6 @@ map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Goto d
 map("n", "<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Goto implementation" })
 map("n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "Goto references" })
 map("n", "<leader>gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", { desc = "Goto declaration" })
+
+-- diffview
+map("n", "<leader>gx", "<cmd>DiffviewFileHistory<cr>", { desc = "Open diff" })
