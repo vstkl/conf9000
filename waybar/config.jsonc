@@ -16,7 +16,7 @@
     "sway/window"
   ],
   "modules-right": [
-    "clipboard",
+    //"clipboard",
     "mpd",
     "idle_inhibitor",
     "pulseaudio",
@@ -34,23 +34,6 @@
     "tray",
     "custom/power"
   ],
-  // Modules configuration
-  // "sway/workspaces": {
-  //     "disable-scroll": true,
-  //     "all-outputs": true,
-  //     "warp-on-scroll": false,
-  //     "format": "{name}: {icon}",
-  //     "format-icons": {
-  //         "1": "",
-  //         "2": "",
-  //         "3": "",
-  //         "4": "",
-  //         "5": "",
-  //         "urgent": "",
-  //         "focused": "",
-  //         "default": ""
-  //     }
-  // },
   "keyboard-state": {
     "numlock": true,
     "capslock": true,
@@ -106,14 +89,6 @@
       "deactivated": ""
     }
   },
-  "tray": {
-    // "icon-size": 21,
-    "spacing": 10,
-    // "icons": {
-    //   "blueman": "bluetooth",
-    //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
-    // }
-  },
   "clock": {
     // "timezone": "America/New_York",
     "format": "{:%H:%M:%S}",
@@ -128,7 +103,7 @@
   },
   "memory": {
     "format": "{used:0.2f}G ",
-    "interval": 1
+    "rpinterval": 1
   },
   "temperature": {
     // "thermal-zone": 2,
@@ -196,7 +171,8 @@
     "tooltip-format": "{ifname} via {gwaddr} ",
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "Disconnected ⚠",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "on-click": "kitty nmtui"
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
@@ -239,8 +215,8 @@
     "menu": "on-click",
     "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
     "menu-actions": {
-      "shutdown": "shutdown",
-      "reboot": "reboot",
+      "shutdown": "systemctl shutdown",
+      "reboot": "systemctl reboot",
       "suspend": "systemctl suspend",
       "hibernate": "systemctl hibernate"
     }
@@ -260,5 +236,5 @@
     "exec": "printf '{\"tooltip\":\"%s\"}' $(cliphist list | wc -l)",
     "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
     "signal": 9
-  },
+  }
 }

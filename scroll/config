@@ -18,14 +18,14 @@ set $term kitty
 # Your preferred application launcher
 set $menu fuzzel
 
-set $filemanager thunar
+set $filemanager nautilus
 set $browser firefox
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/scroll/)
 #output * bg /usr/share/backgrounds/scroll/Sway_Wallpaper_Blue_1920x1080.png fill
-output * bg /home/m/.config/arch-hero-wallpaper-free.png fill
+# output * bg /home/m/.config/arch-hero-wallpaper-free.png fill
 output eDP-1 resolution 1920x1080 position 0,0 scale 1
 
 ### Idle configuration
@@ -37,6 +37,11 @@ exec swayidle -w \
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
+
+exec bitwarden-desktop
+exec easyeffects -w
+exec warp-taskbar
+# exec gammastep-indicator 
 
 exec lxqt-policykit-agent
 exec $HOME/.config/mako/battery.sh
@@ -80,7 +85,7 @@ titlebar_border_thickness 0
 for_window [all] inhibit_idle fullscreen
 for_window [app_id="lxqt-policykit-agent"] floating true
 for_window [shell="xwayland"] title_format "[XWayland] %title"
-
+for_window [title="Picture-in-Picture"]  set_size v 0.5 mode default set_size h 0.5 mode default; floating true
 # Layout settings
 layout_default_width 0.5
 layout_default_height 1.0
@@ -136,7 +141,10 @@ animations {
     # Reload the configuration file
     bindsym $mod+Shift+c reload
 
-    bindsym $mod+Ctrl+q  exec swaylock --screenshots  --effect-pixelate 15
+#    bindsym $mod+Ctrl+q  exec swaylock --screenshots  --effect-pixelate 15
+    bindsym $mod+Ctrl+q  exec swaylock --fingerprint
+    bindsym $mod+o  exec scrollmsg opacity plus 0.1
+    bindsym $mod+i  exec scrollmsg opacity minus 0.1
 
     # Exit scroll (logs you out of your Wayland session)
     bindsym $mod+Shift+x exec scrollnag -t warning -m 'You pressed the exit shortcut. Do you really want to exit scroll? This will end your Wayland session.' -B 'Yes, exit scroll' 'scrollmsg exit' -w 800 -e center -y overlay
