@@ -547,10 +547,13 @@ bindsym $mod+g mode "spaces"
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%- && $HOME/.config/mako/brightness.sh
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+ && $HOME/.config/mako/brightness.sh
     # Special key to take a screenshot with grim
-    bindsym $mod+Shift+s exec grim && notify-send  "took a screenshot"
+
+    bindsym $mod+Ctrl+s exec sh -c 'grim  - | tee ~/Pictures/Screenshots/$(date+\'%Y-%m-%d_%H-%M-%S\').png | wl-copy && notify-send "Screenshot" "Saved and copied to clipboard"'
+    #
+    # AI-made script using slurp and grim
+    bindsym $mod+Shift+Ctrl+s exec sh -c 'grim -g "$(slurp)" - | tee ~/Pictures/Screenshots/$(date+\'%Y-%m-%d_%H-%M-%S\').png | wl-copy && notify-send "Screenshot" "Saved and copied to clipboard"'
 
 bindgesture swipe:4:right workspace next
-bindgesture swipe:4:left workspace prev
 bindgesture swipe:4:up scale_workspace overview 
 
 #
