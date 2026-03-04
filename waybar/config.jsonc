@@ -9,15 +9,14 @@
   "modules-left": [
     "sway/workspaces",
     "sway/mode",
-    "sway/scratchpad",
-    "custom/media"
+    "sway/scratchpad"
+    // "custom/media"
   ],
   "modules-center": [
     "sway/window"
   ],
   "modules-right": [
-    "clipboard",
-    "mpd",
+    "custom/clipboard",
     "idle_inhibitor",
     "pulseaudio",
     "network",
@@ -31,30 +30,14 @@
     "sway/language",
     "battery",
     "clock",
-    "tray",
-    "custom/power"
+    "custom/warp",
+    "custom/power",
+    "tray"
   ],
-  // Modules configuration
-  // "sway/workspaces": {
-  //     "disable-scroll": true,
-  //     "all-outputs": true,
-  //     "warp-on-scroll": false,
-  //     "format": "{name}: {icon}",
-  //     "format-icons": {
-  //         "1": "",
-  //         "2": "",
-  //         "3": "",
-  //         "4": "",
-  //         "5": "",
-  //         "urgent": "",
-  //         "focused": "",
-  //         "default": ""
-  //     }
-  // },
   "keyboard-state": {
     "numlock": true,
     "capslock": true,
-    "format": "{name} {icon}",
+    "format": "{name}",
     "format-icons": {
       "locked": "",
       "unlocked": ""
@@ -64,7 +47,7 @@
     "format": "<span style=\"italic\">{}</span>"
   },
   "sway/scratchpad": {
-    "format": "{icon} {count}",
+    "format": "{count}",
     "show-empty": false,
     "format-icons": [
       "",
@@ -105,14 +88,6 @@
       "activated": "",
       "deactivated": ""
     }
-  },
-  "tray": {
-    // "icon-size": 21,
-    "spacing": 10,
-    // "icons": {
-    //   "blueman": "bluetooth",
-    //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
-    // }
   },
   "clock": {
     // "timezone": "America/New_York",
@@ -196,7 +171,8 @@
     "tooltip-format": "{ifname} via {gwaddr} ",
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "Disconnected ⚠",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "on-click-right": "kitty nmtui"
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
@@ -229,8 +205,8 @@
       "spotify": "",
       "default": "🎜"
     },
-    "escape": true,
-    "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+    "escape": true
+    // "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
     // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
   },
   "custom/power": {
@@ -239,8 +215,8 @@
     "menu": "on-click",
     "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
     "menu-actions": {
-      "shutdown": "shutdown",
-      "reboot": "reboot",
+      "shutdown": "systemctl shutdown",
+      "reboot": "systemctl reboot",
       "suspend": "systemctl suspend",
       "hibernate": "systemctl hibernate"
     }
@@ -254,11 +230,22 @@
     "format": "🄯",
     "interval": "once",
     "return-type": "json",
-    "on-click": "swaymsg -q exec '$clipboard'; pkill -RTMIN+9 waybar",
-    "on-click-right": "swaymsg -q exec '$clipboard-del'; pkill -RTMIN+9 waybar",
-    "on-click-middle": "swaymsg -q exec '$clipboard-del-all'",
+    "on-click": "scrollmsg -q exec '$clipboard'; pkill -RTMIN+9 waybar",
+    "on-click-right": "scrollmsg -q exec '$clipboard-del'; pkill -RTMIN+9 waybar",
+    "on-click-middle": "scrollmsg -q exec '$clipboard-del-all'",
     "exec": "printf '{\"tooltip\":\"%s\"}' $(cliphist list | wc -l)",
     "exec-if": "[ -x \"$(command -v cliphist)\" ] && [ $(cliphist list | wc -l) -gt 0 ]",
     "signal": 9
   },
+  "custom/warp": {
+    "format": " {}", // or any icon
+    "exec": "warp-cli status | head -n1 | cut -d':' -f2 ",
+    "interval": 5,
+    "on-click": "warp-cli connect",
+    "on-click-right": "warp-cli disconnect",
+    "tooltip": false
+  },
+  "tray": {
+    "spacing": 10
+  }
 }

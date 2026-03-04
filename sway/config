@@ -16,39 +16,27 @@ set $right 	l
 # Your preferred terminal emulator
 set $term kitty
 # Your preferred application launcher
-#set $menu rofi -show drun
 set $menu fuzzel
 
-set $filemanager nautilus
+set $filemanager thunar
 set $browser firefox
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/scroll/)
 #output * bg /usr/share/backgrounds/scroll/Sway_Wallpaper_Blue_1920x1080.png fill
-# output * bg /home/m/.config/arch-hero-wallpaper-free.png fill
-### Monitor Layout
-# The monitor on top starts at the origin (0,0)
-#output HDMI-A-2 pos 0 0 res 1920x1080
-output DP-5 pos 0 0 res 1920x1080
+#output * bg /home/m/.config/arch-hero-wallpaper-free.png fill
+output eDP-1 resolution 1920x1080 position 0,0 scale 1
 
-# The laptop screen starts exactly 1080 pixels down
-# output eDP-1 pos 0 1080
-output eDP-1 resolution 1920x1080 position 0,1080 scale 1
 ### Idle configuration
 exec swayidle -w \
-         timeout 300 'exec swaylock --fingerprint -c 880000' \
+         timeout 300 'exec swaylock --screenshots  --effect-pixelate 15' \
          timeout 600 'scrollmsg "output * power off"' resume 'scrollmsg "output * power on"' \
-         before-sleep 'exec swaylock --fingerprint -c 888800'
+         before-sleep 'swaylock -f -c 000000'
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
-
-exec bitwarden-desktop
-exec easyeffects -w
-exec warp-taskbar
-# exec gammastep-indicator 
 
 exec lxqt-policykit-agent
 exec $HOME/.config/mako/battery.sh
@@ -86,41 +74,27 @@ client.focused #15439e #000000 #e0e0e0 #2e9ef4 #15439e
 client.focused_inactive #595959 #000000 #e0e0e0 #2e9ef4 #595959
 client.unfocused #595959 #000000 #e0e0e0 #2e9ef4 #595959
 
-# titlebar_border_thickness 0
+titlebar_border_thickness 0
 
 # Idle inhibit for fullscreen windows
 for_window [all] inhibit_idle fullscreen
 for_window [app_id="lxqt-policykit-agent"] floating true
 for_window [shell="xwayland"] title_format "[XWayland] %title"
-#for_window [title="Picture-in-Picture"]  set_size v 0.5 mode default set_size h 0.5 mode default; floating true
+
 # Layout settings
-layout_default_width 0.5
-layout_default_height 1.0
-layout_widths [0.25 0.33333333 0.5 0.666666667 0.75 1.0]
-layout_heights [0.25 0.33333333 0.5 0.666666667 0.75 1.0]
 
 # These are the default values for some useful scroll options, consult
 # `man 5 scroll` and change them to your preference
 
 # align_reset_auto yes
-cursor_shake_magnify true
-#cycle_size_wrap false
-fullscreen_movefocus false nofollow
 # maximize_if_single false
 # workspace_next_on_output_create_empty true
-#xwayland_output_scale false
-focus_wrapping no
+#xwayland_output_scale false focus_wrapping no
 #focus_on_window_activation focus
 # xdg_activation_force false
 
 # Animations
-animations {
-    enabled yes
-    default yes 200 var 3 [ 0.215 0.61 0.355 1 ]
-    window_open yes 200 var 3 [ 0 0 1 1 ]
-    window_move yes 200 var 3 [ 0.215 0.61 0.355 1 ] off 0.05 6 [0 0.6 0.4 0 1 0 0.4 -0.6 1 -0.6]
-    window_size yes 200 var 3 [ -0.35 0 0 0.5 ]
-}
+
 
 ### Key bindings
 # Basics:
@@ -148,10 +122,7 @@ animations {
     # Reload the configuration file
     bindsym $mod+Shift+c reload
 
-#    bindsym $mod+Ctrl+q  exec swaylock --screenshots  --effect-pixelate 15
-    bindsym $mod+Ctrl+q  exec swaylock --fingerprint -c 000022
-    bindsym $mod+o  exec scrollmsg opacity plus 0.1
-    bindsym $mod+i  exec scrollmsg opacity minus 0.1
+    bindsym $mod+Ctrl+q  exec swaylock --screenshots  --effect-pixelate 15
 
     # Exit scroll (logs you out of your Wayland session)
     bindsym $mod+Shift+x exec scrollnag -t warning -m 'You pressed the exit shortcut. Do you really want to exit scroll? This will end your Wayland session.' -B 'Yes, exit scroll' 'scrollmsg exit' -w 800 -e center -y overlay
@@ -551,16 +522,13 @@ bindsym $mod+g mode "spaces"
     bindsym --locked XF86AudioStop exec playerctl stop
 
     # Special keys to adjust brightness via brightnessctl
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%- && $HOME/.config/mako/brightness.sh
-    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 10%+ && $HOME/.config/mako/brightness.sh
+    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%- && $HOME/.config/mako/brightness.sh
+    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+ && $HOME/.config/mako/brightness.sh
     # Special key to take a screenshot with grim
-
-    bindsym $mod+Ctrl+s exec sh -c 'grim  - | tee ~/Pictures/Screenshots/$(date+\'%Y-%m-%d_%H-%M-%S\').png | wl-copy && notify-send "Screenshot" "Saved and copied to clipboard"'
-    #
-    # AI-made script using slurp and grim
-    bindsym $mod+Shift+Ctrl+s exec sh -c 'grim -g "$(slurp)" - | tee ~/Pictures/Screenshots/$(date+\'%Y-%m-%d_%H-%M-%S\').png | wl-copy && notify-send "Screenshot" "Saved and copied to clipboard"'
+    bindsym $mod+Shift+s exec grim && notify-send  "took a screenshot"
 
 bindgesture swipe:4:right workspace next
+bindgesture swipe:4:left workspace prev
 bindgesture swipe:4:up scale_workspace overview 
 
 #
@@ -594,7 +562,7 @@ bindgesture swipe:4:up scale_workspace overview
 # 
 #     colors {
 #         statusline #ffffff
-#         background #323232
+#         background #32322
 #         inactive_workspace #32323200 #32323200 #5c5c5c
 #         scroller #2F343AFF #055E20FF #FFFFFFFF
 #     }
