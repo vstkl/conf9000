@@ -1,3 +1,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
+[submodule "where-is-my-sddm-theme"]
+	path = where-is-my-sddm-theme
+	url = https://github.com/vstkl/where-is-my-sddm-theme
