@@ -6,4 +6,5 @@ alias buds="bluetoothctl connect  3C:B0:ED:F3:CC:D0 && echo 1 > $HOME/.config/st
 alias mouse="bluetoothctl connect D1:0E:38:93:BA:56 && echo 1 > $HOME/.config/states/mi_mouse_status"
 alias unwrap="sed ':a;N;\$!ba;s/\n//g'"
 alias page="nvim -R"
+alias minecraft="java -jar $HOME/games/launcher-4.0-9998.jar"
 # alias ip="ip -c"
