@@ -30,26 +30,16 @@ set $browser firefox
 ### Monitor Layout
 # The monitor on top starts at the origin (0,0)
 #output HDMI-A-2 pos 0 0 res 1920x1080
-# output DP-5 pos 0 0 res 1920x1080 transform 180 scale 1
-output DP-5 pos 0 0 res 1920x1080 scale 1
-output DP-6 pos 0 0 res 1920x1080 scale 1
+output DP-5 pos 0 0 res 1920x1080
 
 # The laptop screen starts exactly 1080 pixels down
 # output eDP-1 pos 0 1080
-# laptop down, external up
-#output eDP-1 resolution 1920x1080 position 0,1080 scale 1
-
-#output eDP-1 resolution 1920x1080 position 1440,-810 scale 1.25
-#output eDP-1 resolution 1920x1080 position 1920,-864 scale 1.25
-
 output eDP-1 resolution 1920x1080 position 0,1080 scale 1
-# to be on laptop stand left top from screen
-#output eDP-1 resolution 1920x1080 position 1920,-864 scale 1
 ### Idle configuration
-# exec swayidle -w \
-#          timeout 300 'exec swaylock --fingerprint -c 880000' \
-#          timeout 600 'scrollmsg "output * power off"' resume 'scrollmsg "output * power on"' \
-#          before-sleep 'exec swaylock --fingerprint -c 888800'
+exec swayidle -w \
+         timeout 300 'exec swaylock --fingerprint -c 880000' \
+         timeout 600 'scrollmsg "output * power off"' resume 'scrollmsg "output * power on"' \
+         before-sleep 'exec swaylock --fingerprint -c 888800'
 
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -58,20 +48,13 @@ output eDP-1 resolution 1920x1080 position 0,1080 scale 1
 exec bitwarden-desktop
 exec easyeffects -w
 exec warp-taskbar
-exec gammastep-indicator 
+# exec gammastep-indicator 
+
 exec lxqt-policykit-agent
 exec $HOME/.config/mako/battery.sh
+# exec easyeffects
 
-exec easyeffects
-
-# for virt-manager to have bitwarden context
-exec systemctl --user import-environment SSH_AUTH_SOCK
-exec systemctl --user show-environment > /tmp/bitwarden-environment.txt
-
-#exec export SSH_AUTH_SOCK="$HOME/.bitwarden-ssh-agent.so
-#exec systemctl --user set-environment SSH_AUTH_SOCK=$SSH_AUTH_SOCKck"
-
-exec waybar  -b 1 --log-level debug 2>&1 | tee "$HOME/.local/share/waybar/waybar.log"
+exec waybar  -b 1
 
 ### Input configuration
    input type:touchpad {
@@ -109,8 +92,7 @@ client.unfocused #595959 #000000 #e0e0e0 #2e9ef4 #595959
 for_window [all] inhibit_idle fullscreen
 for_window [app_id="lxqt-policykit-agent"] floating true
 for_window [shell="xwayland"] title_format "[XWayland] %title"
-for_window [title="Picture-in-Picture"]  set_size v 0.5 mode default set_size h 0.5 move absolute 10px 10px mode default;  floating true
-
+#for_window [title="Picture-in-Picture"]  set_size v 0.5 mode default set_size h 0.5 mode default; floating true
 # Layout settings
 layout_default_width 0.5
 layout_default_height 1.0
@@ -124,7 +106,7 @@ layout_heights [0.25 0.33333333 0.5 0.666666667 0.75 1.0]
 cursor_shake_magnify true
 #cycle_size_wrap false
 fullscreen_movefocus false nofollow
-maximize_if_single true
+# maximize_if_single false
 # workspace_next_on_output_create_empty true
 #xwayland_output_scale false
 focus_wrapping no
@@ -250,7 +232,7 @@ animations {
 
     # Overview
     bindsym --no-repeat $mod+tab scale_workspace overview
-#    bindsym --whole-window button8 scale_workspace overview
+    bindsym --whole-window button8 scale_workspace overview
 
     # Jump
     # jump_labels_color #9e1530FF
@@ -569,7 +551,7 @@ bindsym $mod+g mode "spaces"
     bindsym --locked XF86AudioStop exec playerctl stop
 
     # Special keys to adjust brightness via brightnessctl
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%- && brightnessctl set 1+ && $HOME/.config/mako/brightness.sh
+    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%- && $HOME/.config/mako/brightness.sh
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 10%+ && $HOME/.config/mako/brightness.sh
     # Special key to take a screenshot with grim
 

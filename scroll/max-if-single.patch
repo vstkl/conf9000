@@ -1,0 +1,10 @@
+--- a/config
++++ b/config
+@@ -107,7 +107,7 @@ client.unfocused #595959 #000000 #e0e0e0 #2e9ef4 #595959
+ # align_reset_auto yes
+ cursor_shake_magnify true
+ #cycle_size_wrap false
+ fullscreen_movefocus false nofollow
+-# maximize_if_single false
++maximize_if_single true
+ #workspace_next_on_output_create_empty true

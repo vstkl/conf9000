@@ -24,7 +24,15 @@ return {
 	{
 		"folke/edgy.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			right = {
+				{
+					ft = "claudecode",
+					title = "Claude Code",
+					size = { width = 0.4 },
+				},
+			},
+		},
 	},
 	-- lazy.nvim
 	{
@@ -307,29 +315,29 @@ return {
 	{
 		"pteroctopus/faster.nvim",
 	},
-	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		build = ":Copilot auth",
-		event = "BufReadPost",
-		opts = {
-			suggestion = {
-				enabled = not vim.g.ai_cmp,
-				auto_trigger = true,
-				hide_during_completion = vim.g.ai_cmp,
-				keymap = {
-					accept = false, -- handled by nvim-cmp / blink.cmp
-					next = "<M-]>",
-					prev = "<M-[>",
-				},
-			},
-			panel = { enabled = false },
-			filetypes = {
-				markdown = true,
-				help = true,
-			},
-		},
-	},
+	-- 	{
+	-- 		"zbirenbaum/copilot.lua",
+	-- 		cmd = "Copilot",
+	-- 		build = ":Copilot auth",
+	-- 		event = "BufReadPost",
+	-- 		opts = {
+	-- 			suggestion = {
+	-- 				enabled = not vim.g.ai_cmp,
+	-- 				auto_trigger = true,
+	-- 				hide_during_completion = vim.g.ai_cmp,
+	-- 				keymap = {
+	-- 					accept = false, -- handled by nvim-cmp / blink.cmp
+	-- 					next = "<M-]>",
+	-- 					prev = "<M-[>",
+	-- 				},
+	-- 			},
+	-- 			panel = { enabled = false },
+	-- 			filetypes = {
+	-- 				markdown = true,
+	-- 				help = true,
+	-- 			},
+	-- 		},
+	-- 	},
 	--	{
 	-- 		"sindrets/diffview.nvim",
 	-- 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -351,4 +359,21 @@ return {
 	-- 			},
 	-- 		},
 	-- 	},
+	-- 	{
+	"coder/claudecode.nvim",
+	dependencies = { "folke/snacks.nvim" },
+	config = true,
+	keys = {
+		{ "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code" },
+		{ "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude Code" },
+		{ "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send selection to Claude" },
+		{ "<leader>at", "<cmd>ClaudeCodeTreeAdd<cr>", desc = "Add file to Claude (tree)" },
+		{
+			"<leader>ao",
+			function()
+				require("claudecode").open_diff()
+			end,
+			desc = "Open Claude diff",
+		},
+	},
 }
