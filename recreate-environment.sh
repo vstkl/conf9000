@@ -92,7 +92,20 @@ setup_apple_t2() {
 }
 
 # ---------------------------------------------------------------------------
-# 3. Packages (mix of official repo + AUR, one per line in ./packages)
+# 3. Multilib (needed for the lib32-* packages in ./packages, and for Steam)
+# ---------------------------------------------------------------------------
+enable_multilib() {
+  if grep -q '^\[multilib\]' /etc/pacman.conf; then
+    return
+  fi
+  log "enabling the multilib repo"
+  sudo cp /etc/pacman.conf "/etc/pacman.conf.bak-$(date +%Y%m%d%H%M%S)"
+  sudo sed -i '/^#\[multilib\]/,/^#Include/ s/^#//' /etc/pacman.conf
+  sudo pacman -Sy
+}
+
+# ---------------------------------------------------------------------------
+# 4. Packages (mix of official repo + AUR, one per line in ./packages)
 # ---------------------------------------------------------------------------
 install_packages() {
   log "installing packages from ./packages (this will take a while)"
@@ -129,7 +142,7 @@ install_packages() {
 }
 
 # ---------------------------------------------------------------------------
-# 4. Dotfiles: symlink every top-level config dir into ~/.config, plus the
+# 5. Dotfiles: symlink every top-level config dir into ~/.config, plus the
 #    loose files that live at the repo root.
 # ---------------------------------------------------------------------------
 link_path() {
@@ -193,7 +206,7 @@ fix_home_paths() {
 }
 
 # ---------------------------------------------------------------------------
-# 5. Services (enabled only when the matching package was actually installed)
+# 6. Services (enabled only when the matching package was actually installed)
 # ---------------------------------------------------------------------------
 enable_services() {
   log "enabling services"
@@ -232,6 +245,7 @@ main() {
   install_paru
 
   if [ "$SKIP_PACKAGES" -eq 0 ]; then
+    enable_multilib
     install_packages
   fi
 
@@ -256,6 +270,9 @@ Next steps:
   - the niri/sway/scroll configs assume they're started from your display
     manager or a TTY session -- pick whichever compositor you want as your
     session
+  - on a btrfs install, run ./setup-btrfs-opt-and-snapshots.sh to set up
+    snapper (root + home) and move /opt to its own subvolume for Steam and
+    dev tooling -- it's a separate, opt-in script since it edits fstab
 EOF
 }
 

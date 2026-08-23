@@ -1306,6 +1306,8 @@ simdjson
 simple-scan
 slang
 smbclient
+snap-pac
+snapper
 snappy
 snapshot
 soapy_power
@@ -1332,6 +1334,7 @@ sratom
 srt
 sshfs
 startup-notification
+steam
 stream-overlay
 subversion
 sudo
