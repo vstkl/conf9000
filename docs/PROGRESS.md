@@ -316,3 +316,22 @@ These may contain tokens/keys and must not be committed or copied into test imag
   (Bitwarden, Signal, mozilla, gh, github-copilot, opencode, evolution, pulse, ibus, user-dirs.dirs,
   other app dirs), generated hypr wallpaper caches; `dconf/user` change left unstaged (binary,
   contains location). Credential scan of staged files found nothing.
+- 2026-10-30 — main agent: pushed `conf9000-setup` (gh credential helper for that one command).
+- 2026-10-30 — main agent: **deployed to the real ~/.config** (copy, like the existing setup).
+  - Before: compared live vs repo. Live-only changes merged into the repo (commit d2ed962): sway
+    `output DP-5` block (its end-of-line comment made the LIVE sway config fail `sway -C`; moved
+    to its own line), bashrc Bitwarden SSH_AUTH_SOCK + IDF_TOOLS_PATH commented, idf*.sh archived.
+  - Backup: ~/config-backup-20261030-211958.tar.gz (bashrc + sway scroll waybar kitty tmux nvim
+    fuzzel yazi mako scripts; 229 files). Restore: `tar -xzf <file> -C ~`.
+  - User installed swaync, ttf-jetbrains-mono-nerd, tinty-git (sudo).
+  - rsync (no delete) of sway scroll waybar kitty tmux nvim fuzzel yazi mako scripts swaync rofi
+    tinted-theming into ~/.config, excluding tmux plugins, nvim undodir + lazy-lock.json,
+    generated colors/flavor files, backups; bashrc -> ~/.bashrc; removed the duplicate fzf copies
+    from ~/.config/scripts.
+  - tinty install + build + apply base16-ayu-dark (12 artifacts; hooks reloaded kitty, tmux colors,
+    waybar, sway). Started swaync + cliphist watchers via swaymsg exec, restarted waybar.
+  - Checks: sway -C OK, waybar loads without warnings, swaync popup themed (screenshot of the top
+    strip only); bar hidden behind the user's fullscreen kitty (workspace rect y=40 = bar present).
+  - User follow-ups: Claude Code `/theme` -> tinty once; tmux `prefix r` (or new server) for the new
+    bindings; nvim installs vim-tmux-navigator on next start. Commits d2ed962 + this one are local;
+    the user pushes them.
