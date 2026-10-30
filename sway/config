@@ -28,6 +28,12 @@ output eDP-1 {
     position 0,0
     scale 1.25
 }
+output DP-5 {
+    resolution 1920x1080
+    # above the builtin screen: y = -(1080 / scale 1.25) = -864
+    position 0,-864
+    scale 1.25
+}
 
 ### Idle configuration
 #

@@ -15,13 +15,14 @@ AIRGEDDON_WINDOWS_HANDLING=tmux
 AIRGEDDON_SKIP_INTRO=true
 
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-export IDF_TOOLS_PATH=/opt/esp/idf/v5.1/
+# export IDF_TOOLS_PATH=/opt/esp/idf/v5.1/   # replaced by esp-ctx.sh (esp use <tag>)
 #export IDF_PATH=/opt/esp/idf/v5.5
 
 
 eval "$(fzf --bash)"
 command -v tinty >/dev/null && eval "$(tinty generate-completion bash)"
 export MANPAGER='nvim +Man!'
+export SSH_AUTH_SOCK=$HOME/.bitwarden-ssh-agent.sock
 source /usr/share/nvm/init-nvm.sh
 
 
