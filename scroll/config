@@ -30,17 +30,45 @@ set $browser firefox
 ### Monitor Layout
 # The monitor on top starts at the origin (0,0)
 #output HDMI-A-2 pos 0 0 res 1920x1080
-output DP-5 pos 0 0 res 1920x1080
+#output DP-5 pos 0 0 res 1920x1080
 
 # The laptop screen starts exactly 1080 pixels down
-# output eDP-1 pos 0 1080
-output eDP-1 resolution 1920x1080 position 0,1080 scale 1
+# (positions are in logical pixels: 1920x1080 @ 1.25 = 1536x864 logical)
+output eDP-1 {
+    # Pin 60 Hz; the panel also advertises a 48 Hz mode
+    mode 1920x1080@59.999Hz
+    position 0 1080
+    # 1.25 = 150/120, an exact fractional-scale step, so native Wayland apps stay sharp
+    scale 1.25
+    # linear at fractional scale, nearest at integer scale
+    scale_filter smart
+}
 ### Idle configuration
 exec swayidle -w \
          timeout 300 'exec swaylock --fingerprint -c 880000' \
          timeout 600 'scrollmsg "output * power off"' resume 'scrollmsg "output * power on"' \
          before-sleep 'exec swaylock --fingerprint -c 888800'
 
+### Input configuration
+   input type:touchpad {
+       	dwt enabled
+       	tap enabled
+       	natural_scroll enabled
+	accel_profile adaptive
+	scroll_factor 1.5
+	pointer_accel 0.1
+	drag disabled
+#       middle_emulation enabled
+   }
+#
+   input type:keyboard {
+       	xkb_layout "us,cz"
+	xkb_options "altwin:prtsc_rwin"
+   	repeat_delay  200
+	repeat_rate 30
+   }
+#
+#
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
@@ -56,11 +84,18 @@ exec $HOME/.config/mako/battery.sh
 
 exec waybar  -b 1
 
+# Notifications: swaync (config in ~/.config/swaync; bell in waybar opens the panel)
+exec swaync
+
+# Clipboard history (cliphist): record text and images
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
+
 ### Input configuration
    input type:touchpad {
        	dwt enabled
        	tap enabled
-       	natural_scroll enabled
+       	natural_scroll disabled 
 	accel_profile adaptive
 	scroll_factor 1.5
 	pointer_accel 0.1
@@ -85,6 +120,8 @@ gaps outer 2
 client.focused #15439e #000000 #e0e0e0 #2e9ef4 #15439e
 client.focused_inactive #595959 #000000 #e0e0e0 #2e9ef4 #595959
 client.unfocused #595959 #000000 #e0e0e0 #2e9ef4 #595959
+# base16 colors from tinty override the lines above (tinted-theming/conf9000-templates)
+include ~/.local/share/tinted-theming/tinty/artifacts/sway-sway-file.conf
 
 # titlebar_border_thickness 0
 
@@ -92,6 +129,11 @@ client.unfocused #595959 #000000 #e0e0e0 #2e9ef4 #595959
 for_window [all] inhibit_idle fullscreen
 for_window [app_id="lxqt-policykit-agent"] floating true
 for_window [shell="xwayland"] title_format "[XWayland] %title"
+# Bluetooth / network menus from waybar (right-click): drop down under the bar like the calendar.
+# Centered on the cursor (clamped to the screen edge), pushed below the bar; size comes from kitty.
+# waybar/scripts/dropdown.sh then aligns the top exactly to the bar's bottom edge.
+for_window [app_id="bt-menu"] floating enable, border none, move position cursor, move down 42 px
+for_window [app_id="nm-menu"] floating enable, border none, move position cursor, move down 42 px
 #for_window [title="Picture-in-Picture"]  set_size v 0.5 mode default set_size h 0.5 mode default; floating true
 # Layout settings
 layout_default_width 0.5
@@ -137,6 +179,13 @@ animations {
     
     bindsym $mod+Shift+e exec $filemanager
     bindsym $mod+Shift+f exec $browser
+
+    # Clipboard history: pick (fuzzel), delete one entry, wipe all
+    bindsym $mod+Shift+v exec ~/.config/sway/clipboard.sh
+    bindsym $mod+Ctrl+v exec ~/.config/sway/clipboard.sh delete
+    bindsym $mod+Ctrl+Shift+v exec ~/.config/sway/clipboard.sh wipe
+    # rofi alternative:
+    # bindsym $mod+Shift+v exec ~/.config/sway/clipboard.sh rofi
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.

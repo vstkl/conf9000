@@ -1,13 +1,33 @@
+-- base16 scheme from tinty (same as the rest of the desktop), e.g. "base16-ayu-dark"
+local tinty_current = (vim.env.XDG_DATA_HOME or (vim.env.HOME .. "/.local/share"))
+	.. "/tinted-theming/tinty/current_scheme"
+local function tinty_scheme()
+	local ok, lines = pcall(vim.fn.readfile, tinty_current)
+	local name = ok and lines[1] and vim.trim(lines[1]) or ""
+	return name ~= "" and name or "base16-ayu-dark"
+end
+
 return {
 	-- Base plugins
 	{
 		"LazyVim/LazyVim",
 		opts = {
-			colorscheme = vim.env.BASE16_THEME,
+			colorscheme = tinty_scheme(),
 		},
 	},
 	{ -- minimal config
 		"tinted-theming/tinted-vim",
+		init = function()
+			-- follow `tinty apply` while nvim is open: re-check when nvim gets focus
+			vim.api.nvim_create_autocmd("FocusGained", {
+				callback = function()
+					local name = tinty_scheme()
+					if vim.g.colors_name ~= name then
+						pcall(vim.cmd.colorscheme, name)
+					end
+				end,
+			})
+		end,
 	},
 	{
 		"folke/lazydev.nvim",

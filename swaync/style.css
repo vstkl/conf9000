@@ -1,0 +1,38 @@
+/* swaync: the packaged theme, recolored with the base16 palette from tinty (colors.css is
+   written by `tinty apply`), same look as waybar's tooltip: base00 background, base05 text,
+   1px base0E frame, 10px radius, JetBrainsMono Nerd Font. */
+@import url("file:///etc/xdg/swaync/style.css");
+@import url("colors.css");
+
+:root {
+  --cc-bg: var(--base00);
+  --noti-border-color: var(--base0E);
+  --noti-bg: var(--base00-rgb);
+  --noti-bg-alpha: 1;
+  --noti-bg-darker: var(--base01);
+  --noti-bg-hover: var(--base02);
+  --noti-bg-focus: var(--base02);
+  --noti-close-bg: var(--base02);
+  --noti-close-bg-hover: var(--base03);
+  --text-color: var(--base05);
+  --text-color-disabled: var(--base03);
+  --bg-selected: var(--base0E);
+  --border-radius: 10px;
+  --notification-shadow: none;
+  --font-size-body: 13px;
+  --font-size-summary: 14px;
+}
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+}
+
+.control-center {
+  border: 1px solid var(--base0E);
+  border-radius: 10px;
+}
+
+/* critical urgency framed in red, like the old mako [urgency=high] rule */
+.notification-row .notification-background .notification.critical {
+  border: 2px solid var(--base08);
+}

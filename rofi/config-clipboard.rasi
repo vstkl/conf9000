@@ -1,0 +1,14 @@
+/* clipboard history picker (used by sway/clipboard.sh rofi and hypr/scripts/ClipManager.sh) */
+@import "config.rasi"
+
+configuration {
+	show-icons: false;
+}
+
+window {
+	width: 50%;
+}
+
+listview {
+	lines: 15;
+}

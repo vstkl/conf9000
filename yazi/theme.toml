@@ -1,0 +1,8 @@
+#:schema https://yazi-rs.github.io/schemas/theme.json
+
+# Flavor "tinted-scheme" is written by `tinty apply` (tinted-yazi, follows the desktop scheme);
+# the older flavors in flavors/ are kept for reference.
+# Keep this file to `[flavor]` only, unless you want to override single styles.
+[flavor]
+dark  = "tinted-scheme"
+light = "tinted-scheme"

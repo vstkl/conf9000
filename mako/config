@@ -3,7 +3,15 @@ default-timeout=15000
 anchor=top-center
 layer=overlay
 width=400
-border-size=0
+# waybar tooltip look (waybar/style.css)
+font=JetBrainsMono Nerd Font 11
+background-color=#0F1419
+text-color=#F3F4F5
+border-color=#D2A6FF
+border-size=1
+border-radius=10
+padding=10
+margin=6
 
 [urgency=high]
 border-color=#ff0000
@@ -39,3 +47,6 @@ group-by=app-name
 format=<b>%s</b>\n%b
 progress-color=#0000ffaa
 
+# do-not-disturb (toggled by sway/notify.sh dnd / right-click on the waybar bell)
+[mode=do-not-disturb]
+invisible=1

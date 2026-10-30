@@ -1,0 +1,90 @@
+# tinty: one base16 scheme for the whole desktop (https://github.com/tinted-theming/tinty)
+#   tinty apply base16-gruvbox-dark     switch everything (or `theme <scheme>` in bash)
+#   tinty list | tinty current
+# Each item copies its theme to ~/.local/share/tinted-theming/tinty/<name>-<themes-dir>-file.*
+# and runs its hook to reload the app. The configs include those files.
+shell = "bash -c '{}'"
+default-scheme = "base16-ayu-dark"
+
+[[items]]
+name = "shell"
+path = "https://github.com/tinted-theming/tinted-shell"
+themes-dir = "scripts"
+supported-systems = ["base16", "base24"]
+# bash sources the file itself (scripts/paint.sh); nothing to reload here
+
+[[items]]
+name = "fzf"
+path = "https://github.com/tinted-theming/tinted-fzf"
+themes-dir = "bash"
+supported-systems = ["base16", "base24"]
+
+[[items]]
+name = "kitty"
+path = "https://github.com/tinted-theming/tinted-terminal"
+themes-dir = "themes/kitty"
+supported-systems = ["base16", "base24"]
+# kitty.conf includes the file; SIGUSR1 = reload config in every running kitty
+hook = "pkill -USR1 -x kitty; true"
+
+[[items]]
+name = "tmux"
+path = "https://github.com/tinted-theming/tinted-tmux"
+themes-dir = "colors"
+supported-systems = ["base16", "base24"]
+hook = "tmux source-file %f 2>/dev/null; true"
+
+[[items]]
+name = "waybar"
+path = "https://github.com/tinted-theming/base16-waybar"
+themes-dir = "colors"
+supported-systems = ["base16"]
+# style.css imports colors.css (gitignored); SIGUSR2 = reload style
+hook = "cp -f %f ~/.config/waybar/colors.css && { pkill -USR2 -x waybar; true; }"
+
+[[items]]
+name = "sway"
+path = "~/.config/tinted-theming/conf9000-templates"
+themes-dir = "sway"
+supported-systems = ["base16"]
+# sway/scroll config include the file
+hook = "if [ -n \"$SCROLLSOCK\" ]; then scrollmsg reload; elif [ -n \"$SWAYSOCK\" ]; then swaymsg reload; fi >/dev/null 2>&1; true"
+
+[[items]]
+name = "swaync"
+path = "~/.config/tinted-theming/conf9000-templates"
+themes-dir = "swaync"
+supported-systems = ["base16"]
+# style.css imports colors.css (gitignored)
+hook = "cp -f %f ~/.config/swaync/colors.css && { swaync-client -rs >/dev/null 2>&1; true; }"
+
+[[items]]
+name = "fuzzel"
+path = "~/.config/tinted-theming/conf9000-templates"
+themes-dir = "fuzzel"
+supported-systems = ["base16"]
+# fuzzel.ini includes the file; read on every launch
+
+[[items]]
+name = "rofi"
+path = "https://github.com/tinted-theming/base16-rofi"
+themes-dir = "colors"
+supported-systems = ["base16"]
+# rofi/config.rasi imports the file (color variables only, keeps our layout); read on launch
+
+[[items]]
+name = "yazi"
+path = "https://github.com/tinted-theming/tinted-yazi"
+themes-dir = "flavors"
+supported-systems = ["base16", "base24"]
+# yazi/theme.toml selects the "tinted-scheme" flavor (flavor.toml is gitignored)
+hook = "mkdir -p ~/.config/yazi/flavors/tinted-scheme.yazi && cp -f %f ~/.config/yazi/flavors/tinted-scheme.yazi/flavor.toml"
+
+[[items]]
+name = "claude-code"
+path = "https://github.com/tinted-theming/tinted-claude-code"
+themes-dir = "themes"
+theme-file-extension = ".json"
+supported-systems = ["base16", "base24", "tinted8"]
+# select "tinty" once in Claude Code's /theme; it hot-reloads ~/.claude/themes/ after that
+hook = "mkdir -p ~/.claude/themes && cp -f %f ~/.claude/themes/tinty.json"

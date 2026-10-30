@@ -1,0 +1,63 @@
+# rsync exclude patterns for ./sync.sh (one per line, '#' comments).
+# Leading '/' = anchored at the repo root. Keep ALL exclusions here.
+#
+# WHY THIS MATTERS: recreate-environment.sh symlinks EVERY top-level directory
+# of the repo copy into ~/.config. This list is the only thing that keeps app
+# state / secrets / repo meta out of the VM (and out of its ~/.config).
+# Note: rsync does not support trailing comments -> comments on their own lines only.
+
+# --- sensitive / bulky app state (tokens, cookies, keys, chat DBs) ---
+/Bitwarden/
+/Signal/
+/gh/
+/github-copilot/
+/evolution/
+/mozilla/
+/pulse/
+/ibus/
+/wireshark/
+/libreoffice/
+/totem/
+/vlc/
+/GIMP/
+/inkscape/
+/freerouting/
+/user-dirs.dirs
+/goa-1.0/
+# service.json holds a plaintext password
+/opencode/
+/wordcraft/
+/OpenSCAD/
+/fstl-app/
+# undo history = old file contents
+/nvim/undodir/
+# location data, virt-manager URIs (bootstrap then skips the dconf copy)
+/dconf/
+
+# --- repo meta, never needed in the VM (the bootstrap would symlink them into ~/.config) ---
+/docs/
+/testenv/
+
+# --- secrets by name, anywhere ---
+*token*
+*Token*
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+.env
+
+# --- git: keep the repo (recreate-environment.sh runs `git submodule update`)
+#     but not hooks/logs/caches ---
+/.git/hooks/
+/.git/logs/
+/.git/FETCH_HEAD
+/.git/ORIG_HEAD
+
+# --- the test environment's own runtime state ---
+/testenv/images/
+/testenv/logs/
+/testenv/run/
+/testenv/ssh/
+*.qcow2
+*.iso

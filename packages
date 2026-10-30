@@ -50,6 +50,7 @@ bitwarden
 bitwarden-ssh-agent-git
 bladerf
 blas
+bluetui
 bluez
 bluez-libs
 bluez-utils
@@ -82,6 +83,7 @@ chmlib
 chromaprint
 cifs-utils
 clang
+cliphist
 cloudflared
 cmake
 codec2
@@ -1338,6 +1340,7 @@ sudo
 sushi
 svt-av1
 svt-hevc
+swaync
 swtpm
 systemd
 systemd-libs
@@ -1352,6 +1355,7 @@ tevent
 texinfo
 thrift
 timeshift
+tinty-git
 tinysparql
 tk
 tmux
@@ -1368,6 +1372,7 @@ tree-sitter-query
 tree-sitter-vim
 tree-sitter-vimdoc
 tslib
+ttf-jetbrains-mono-nerd
 ttf-liberation
 ttf-nerd-fonts-symbols
 ttf-nerd-fonts-symbols-common

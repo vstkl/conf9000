@@ -1,0 +1,9 @@
+# runtime state of the test VM -- never commit
+images/
+logs/
+run/
+ssh/
+*.qcow2
+*.qcow2.part
+*.iso
+id_ed25519*

@@ -1,0 +1,3 @@
+# plugins installed by tpm (prefix I); tpm itself is a submodule
+plugins/*
+!plugins/tpm

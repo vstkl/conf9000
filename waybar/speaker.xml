@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+		<child>
+		<object class="GtkImageMenuItem" id="speaker">
+			<child>
+				<object class="GtkLabel">
+				  <property name="label">Speaker</property>
+			  </object>
+				</child>
+			<child>
+			  <object class="GtkImage">
+				<property name="icon-name">speaker</property>
+			  </object>
+			</child>
+		</object>
+    </child>
+		<child>
+		<object class="GtkImageMenuItem" id="airpods">
+			<child>
+				<object class="GtkLabel">
+				  <property name="label">Airpods Pro</property>
+			  </object>
+			</child>
+			<child>
+			  <object class="GtkImage">
+				<property name="icon-name">airpods</property>
+			  </object>
+			</child>
+		</object>
+    </child>
+		<child>
+		<object class="GtkImageMenuItem" id="hdmi">
+			<child>
+				<object class="GtkLabel">
+				 <property name="label">HDMI</property>
+			 </object>
+			</child>
+			<child>
+			 <object class="GtkImage">
+				<property name="icon-name">hdmi</property>
+			 </object>
+			</child>
+		</object>
+    </child>
+  </object>
+</interface>

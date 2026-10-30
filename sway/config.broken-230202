@@ -1,0 +1,332 @@
+# vim: ft=swayconfig
+#
+# Sway config, ported from ~/.config/scroll/config.
+# Scroll-only features (scale_workspace, jump, trails, spaces, animations,
+# set_mode, cycle_size, ...) are replaced with sway equivalents or dropped.
+#
+# Read `man 5 sway` for a complete reference.
+
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+# Home row direction keys, like vim
+set $left 	h
+set $down 	j
+set $up 	k
+set $right 	l
+# Your preferred terminal emulator
+set $term kitty
+# Your preferred application launcher
+#set $menu rofi -show drun
+set $menu fuzzel
+
+set $filemanager nautilus
+set $browser firefox
+
+# swaylock 1.8 has no --fingerprint; install swaylock-fprintd and add it back if wanted
+set $lock swaylock -f -c 000022
+
+### Output configuration
+#
+#output * bg /home/m/.config/arch-hero-wallpaper-free.png fill
+### Monitor Layout
+# The monitor on top starts at the origin (0,0)
+#output HDMI-A-2 pos 0 0 res 1920x1080
+
+# The laptop screen starts exactly 1080 pixels down
+# (positions are in logical pixels: 1920x1080 @ 1.25 = 1536x864 logical)
+output eDP-1 {
+    # Pin 60 Hz; the panel also advertises a 48 Hz mode
+    mode 1920x1080@59.999Hz
+    position 0 1080
+    # 1.25 = 150/120, an exact fractional-scale step, so native Wayland apps stay sharp
+    scale 1.25
+    # linear at fractional scale, nearest at integer scale
+    scale_filter smart
+}
+
+### Idle configuration
+exec swayidle -w \
+         timeout 300 '$lock -c 880000' \
+         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         before-sleep '$lock -c 888800'
+
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+exec bitwarden-desktop
+exec easyeffects -w
+exec warp-taskbar
+# exec gammastep-indicator
+
+exec lxqt-policykit-agent
+exec $HOME/.config/mako/battery.sh
+
+exec waybar -b 1
+
+### Input configuration
+input type:touchpad {
+    dwt enabled
+    tap enabled
+    natural_scroll disabled
+    accel_profile adaptive
+    scroll_factor 1.5
+    pointer_accel 0.1
+    drag disabled
+#   middle_emulation enabled
+}
+
+input type:keyboard {
+    xkb_layout "us,cz"
+    xkb_options "altwin:prtsc_rwin"
+    repeat_delay 200
+    repeat_rate 30
+}
+#
+# Read `man 5 sway-input` for more information about this section.
+
+### Windows defaults
+default_border pixel 2
+gaps inner 1
+gaps outer 2
+client.focused #15439e #000000 #e0e0e0 #2e9ef4 #15439e
+client.focused_inactive #595959 #000000 #e0e0e0 #2e9ef4 #595959
+client.unfocused #595959 #000000 #e0e0e0 #2e9ef4 #595959
+
+titlebar_border_thickness 0
+focus_wrapping no
+
+# Idle inhibit for fullscreen windows
+for_window [all] inhibit_idle fullscreen
+for_window [app_id="lxqt-policykit-agent"] floating true
+for_window [shell="xwayland"] title_format "[XWayland] %title"
+
+### Key bindings
+# Basics:
+    # Start a terminal
+    bindsym $mod+Return exec $term
+
+    # Kill focused window
+    bindsym $mod+q kill
+    # Kill every window on the current workspace
+    bindsym $mod+Ctrl+Backspace [workspace=__focused__] kill
+
+    # Start your launcher
+    bindsym $mod+Space exec $menu
+
+    bindsym $mod+Shift+e exec $filemanager
+    bindsym $mod+Shift+f exec $browser
+
+    # Drag floating windows by holding down $mod and left mouse button.
+    # Resize them with right mouse button + $mod.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $mod normal
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
+
+    bindsym $mod+Ctrl+q exec $lock
+    bindsym $mod+o opacity plus 0.1
+    bindsym $mod+i opacity minus 0.1
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym $mod+Shift+x exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+    # Split direction for the next window (scroll: set_mode h/v)
+    bindsym $mod+bracketleft splith
+    bindsym $mod+bracketright splitv
+# Moving around:
+    # Move your focus around
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    bindsym $mod+home focus parent
+    bindsym $mod+end focus child
+    # Move the focused window with the same, but add Ctrl
+    bindsym $mod+Ctrl+$left move left
+    bindsym $mod+Ctrl+$down move down
+    bindsym $mod+Ctrl+$up move up
+    bindsym $mod+Ctrl+$right move right
+
+    # Focus other monitors
+    bindsym $mod+Shift+$left focus output left
+    bindsym $mod+Shift+$down focus output down
+    bindsym $mod+Shift+$up focus output up
+    bindsym $mod+Shift+$right focus output right
+
+# Workspaces:
+    # Switch to workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1; workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2; workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3; workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4; workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5; workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6; workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7; workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8; workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9; workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10; workspace number 10
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.
+
+    bindsym $mod+Ctrl+1 move workspace to output left
+    bindsym $mod+Ctrl+2 move workspace to output right
+
+    bindsym $mod+Shift+Page_Up workspace prev
+    bindsym $mod+Shift+Page_Down workspace next
+    bindsym $mod+Page_Up workspace prev_on_output
+    bindsym $mod+Page_Down workspace next_on_output
+
+    # scroll: overview -> sway: jump to the previous workspace
+    bindsym --no-repeat $mod+tab workspace back_and_forth
+    bindsym $mod+Ctrl+z workspace back_and_forth
+
+# Output scaling (sway has no per-workspace zoom; this changes the whole screen)
+    bindsym $mod+Shift+comma output eDP-1 scale 1
+    bindsym $mod+Shift+period output eDP-1 scale 1.5
+    bindsym $mod+Shift+Ctrl+period output eDP-1 scale 1.25
+
+# Layout stuff:
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+    bindsym $mod+Ctrl+f fullscreen toggle global
+
+    # Switch the current container between different layout styles
+    bindsym $mod+t layout tabbed
+    bindsym $mod+Shift+t layout stacking
+    # Toggle layout type (h<->v) (scroll: layout_transpose)
+    bindsym $mod+Shift+y layout toggle split
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+y focus mode_toggle
+
+    # Float a window
+    bindsym $mod+v floating toggle
+
+    # Toggle sticky
+    bindsym $mod+Shift+Ctrl+a sticky toggle
+
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+z move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+z scratchpad show
+
+#
+# Resizing containers:
+#
+bindsym $mod+minus resize shrink width 10 ppt
+bindsym $mod+equal resize grow width 10 ppt
+bindsym $mod+Shift+minus resize shrink height 10 ppt
+bindsym $mod+Shift+equal resize grow height 10 ppt
+
+mode "setsizeh" {
+    bindsym 1 resize set width 12.5 ppt; mode default
+    bindsym 2 resize set width 16.7 ppt; mode default
+    bindsym 3 resize set width 25 ppt; mode default
+    bindsym 4 resize set width 33.3 ppt; mode default
+    bindsym 5 resize set width 37.5 ppt; mode default
+    bindsym 6 resize set width 50 ppt; mode default
+    bindsym 7 resize set width 62.5 ppt; mode default
+    bindsym 8 resize set width 66.7 ppt; mode default
+    bindsym 9 resize set width 75 ppt; mode default
+    bindsym 0 resize set width 83.3 ppt; mode default
+    bindsym minus resize set width 87.5 ppt; mode default
+    bindsym equal resize set width 100 ppt; mode default
+
+    # Return to default mode
+    bindsym Escape mode "default"
+}
+bindsym $mod+b mode "setsizeh"
+
+mode "setsizev" {
+    bindsym 1 resize set height 12.5 ppt; mode default
+    bindsym 2 resize set height 16.7 ppt; mode default
+    bindsym 3 resize set height 25 ppt; mode default
+    bindsym 4 resize set height 33.3 ppt; mode default
+    bindsym 5 resize set height 37.5 ppt; mode default
+    bindsym 6 resize set height 50 ppt; mode default
+    bindsym 7 resize set height 62.5 ppt; mode default
+    bindsym 8 resize set height 66.7 ppt; mode default
+    bindsym 9 resize set height 75 ppt; mode default
+    bindsym 0 resize set height 83.3 ppt; mode default
+    bindsym minus resize set height 87.5 ppt; mode default
+    bindsym equal resize set height 100 ppt; mode default
+
+    # Return to default mode
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+b mode "setsizev"
+
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 100px
+    bindsym $down resize grow height 100px
+    bindsym $up resize shrink height 100px
+    bindsym $right resize grow width 100px
+
+    # Return to default mode
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+r mode "resize"
+
+# Utilities:
+#
+    # Special keys to adjust volume via PulseAudio
+    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle && $HOME/.config/mako/volume.sh
+    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5% && $HOME/.config/mako/volume.sh
+    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5% && $HOME/.config/mako/volume.sh
+
+    bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+
+    # Special keys to control media via playerctl
+    bindsym --locked XF86AudioPlay exec playerctl play-pause
+    bindsym --locked XF86AudioPause exec playerctl play-pause
+    bindsym --locked XF86AudioPrev exec playerctl previous
+    bindsym --locked XF86AudioNext exec playerctl next
+    bindsym --locked XF86AudioStop exec playerctl stop
+
+    # Special keys to adjust brightness via brightnessctl
+    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%- && $HOME/.config/mako/brightness.sh
+    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 10%+ && $HOME/.config/mako/brightness.sh
+
+    # Screenshots: full screen / selected region, saved and copied to clipboard
+    bindsym $mod+Ctrl+s exec sh -c 'mkdir -p ~/Pictures/Screenshots && f=~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && grim "$f" && wl-copy < "$f" && notify-send "Screenshot" "Saved and copied to clipboard"'
+    bindsym $mod+Shift+Ctrl+s exec sh -c 'mkdir -p ~/Pictures/Screenshots && f=~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png && grim -g "$(slurp)" "$f" && wl-copy < "$f" && notify-send "Screenshot" "Saved and copied to clipboard"'
+
+bindgesture swipe:4:right workspace next
+bindgesture swipe:4:left workspace prev
+
+#
+# Workspace rules:
+#
+# Opens a terminal when creating workspace 6
+# workspace 6 exec kitty
+
+include /etc/sway/config.d/*

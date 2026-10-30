@@ -1,0 +1,56 @@
+/* rofi launcher config (alternative to fuzzel; enable in sway/scroll config) */
+configuration {
+	modi: "drun,run,window";
+	show-icons: true;
+	terminal: "kitty";
+	drun-display-format: "{name}";
+	display-drun: "apps";
+	font: "monospace 11";
+}
+
+/* base16 color variables (@background, @foreground, @blue, @red, @lightbg, ...) from tinty */
+@import "~/.local/share/tinted-theming/tinty/artifacts/rofi-colors-file.rasi"
+
+* {
+	bg: @background;
+	fg: @foreground;
+	accent: @blue;
+	urgent: @red;
+	background-color: transparent;
+	text-color: @fg;
+}
+
+window {
+	width: 40%;
+	background-color: @bg;
+	border: 2px;
+	border-color: @accent;
+	border-radius: 8px;
+	padding: 12px;
+}
+
+inputbar {
+	children: [prompt, entry];
+	spacing: 8px;
+	padding: 0 0 8px 0;
+}
+
+prompt { text-color: @accent; }
+
+listview {
+	lines: 12;
+	scrollbar: false;
+}
+
+element {
+	padding: 4px 8px;
+	border-radius: 4px;
+}
+
+element selected {
+	background-color: @lightbg;
+}
+
+element-text, element-icon {
+	text-color: inherit;
+}

@@ -1,0 +1,11 @@
+# Local tinted-theming templates for apps without an upstream template repo.
+# Built for every scheme by `tinty build` (output dirs are gitignored).
+sway:
+  filename: "sway/{{ scheme-system }}-{{ scheme-slug }}.conf"
+  supported-systems: ["base16"]
+swaync:
+  filename: "swaync/{{ scheme-system }}-{{ scheme-slug }}.css"
+  supported-systems: ["base16"]
+fuzzel:
+  filename: "fuzzel/{{ scheme-system }}-{{ scheme-slug }}.ini"
+  supported-systems: ["base16"]
