@@ -311,3 +311,8 @@ These may contain tokens/keys and must not be committed or copied into test imag
   Verified: after sync, plugins = tpm, tmux-sensible, vim-tmux-navigator, tmux-yank.
   Open question for the user (from the subagent): P L (last session) is now resize-right;
   last session moved to P ( / P ).
+- 2026-10-30 — main agent: **committed** on new branch `conf9000-setup` (from `live`), commit
+  9f4aa49, 495 files, local only (not pushed). Excluded: app state / secrets via .gitignore
+  (Bitwarden, Signal, mozilla, gh, github-copilot, opencode, evolution, pulse, ibus, user-dirs.dirs,
+  other app dirs), generated hypr wallpaper caches; `dconf/user` change left unstaged (binary,
+  contains location). Credential scan of staged files found nothing.
