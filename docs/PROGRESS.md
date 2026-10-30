@@ -335,3 +335,20 @@ These may contain tokens/keys and must not be committed or copied into test imag
   - User follow-ups: Claude Code `/theme` -> tinty once; tmux `prefix r` (or new server) for the new
     bindings; nvim installs vim-tmux-navigator on next start. Commits d2ed962 + this one are local;
     the user pushes them.
+- 2026-10-30 — main agent: **dropdown closes on click outside + live `theme` preview.**
+  - waybar/scripts/dropdown.sh: while a menu is open, `focus_follows_mouse` is set to `no` (else
+    hovering another window would move focus) and a watcher subscribed to sway window/workspace
+    focus events kills the menu when focus leaves it; on close the previous value (from the config,
+    default yes) is restored and the watcher's process group is killed. Verified in VM (headless
+    sway with the real config): stays open while the pointer moves over another window, closes when
+    that window is clicked, watcher cleaned up; sway -d log shows `focus_follows_mouse no` on open
+    and `yes` after both close paths (click outside, icon toggle). Synthetic pointer motion doesn't
+    trigger focus-follows-mouse in headless sway, so the hover behavior itself is untested there.
+  - `theme` picker: fzf `--preview` (new tinted-theming/theme-preview.sh `show`: name, variant,
+    16 swatches, code sample in the scheme's colors) and `focus:execute-silent(... term {})`, which
+    runs tinted-shell's per-scheme script with TTY=/dev/tty so the terminal itself recolors live;
+    Esc restores the current scheme. Verified in VM: 22 palette escapes emitted, preview panel
+    shown, Esc -> rc 1 and scheme unchanged, Enter -> scheme applied.
+  - tinty swaync hook now `timeout 3 swaync-client -rs` (the client blocks forever when swaync
+    isn't running and held tinty's lock, so later applies hung).
+  - Deployed the 4 changed files to the real ~/.config.

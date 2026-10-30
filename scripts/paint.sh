@@ -3,7 +3,7 @@
 # One scheme for the whole desktop: kitty, tmux, neovim, waybar, sway/scroll, swaync, fuzzel,
 # rofi, yazi, bat, Claude Code, bash and fzf (see ~/.config/tinted-theming/tinty/config.toml).
 #
-#   theme                 pick a scheme with fzf
+#   theme                 pick a scheme with fzf (live preview in this terminal)
 #   theme ayu-dark        apply base16-ayu-dark everywhere (Tab completes scheme names)
 #   theme base24-dracula  base24 schemes need the prefix
 
@@ -35,7 +35,16 @@ theme() {
 	if [ -z "$scheme" ]; then
 		command -v fzf >/dev/null || { _theme_names; return; }
 		current=$(tinty current 2>/dev/null)
-		scheme=$(_theme_names | fzf --prompt "theme> " --query "${current#base16-}") || return
+		local preview="${XDG_CONFIG_HOME:-$HOME/.config}/tinted-theming/theme-preview.sh"
+		# live preview: this terminal takes the highlighted scheme's colors; the side panel shows
+		# its palette. Esc restores the current scheme.
+		scheme=$(_theme_names | fzf --prompt "theme> " --query "${current#base16-}" \
+			--preview "$preview show {}" --preview-window right,46,border-left \
+			--bind "focus:execute-silent($preview term {})")
+		if [ -z "$scheme" ]; then
+			_tinty_source
+			return 1
+		fi
 	fi
 	case "$scheme" in base16-* | base24-* | tinted8-*) ;; *) scheme="base16-$scheme" ;; esac
 	tinty apply "$scheme" && _tinty_source

@@ -56,7 +56,7 @@ path = "~/.config/tinted-theming/conf9000-templates"
 themes-dir = "swaync"
 supported-systems = ["base16"]
 # style.css imports colors.css (gitignored)
-hook = "cp -f %f ~/.config/swaync/colors.css && { swaync-client -rs >/dev/null 2>&1; true; }"
+hook = "cp -f %f ~/.config/swaync/colors.css && { timeout 3 swaync-client -rs >/dev/null 2>&1; true; }"
 
 [[items]]
 name = "fuzzel"

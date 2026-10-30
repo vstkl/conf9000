@@ -6,7 +6,8 @@
 #   dropdown.sh --resize APP_ID COLS ROWS     (from inside the dropdown: change its size,
 #                                             it stays under the bar, centered on the icon)
 #
-# Running it again while open closes it (click the icon again). The for_window rule in
+# Running it again while open closes it (click the icon again), and so does clicking
+# anywhere outside it (focus leaves it). The for_window rule in
 # sway/scroll config floats APP_ID at the cursor 42px down; this script then aligns its top
 # to just below the bar of the focused output, whatever the bar height is.
 set -euo pipefail
@@ -65,8 +66,25 @@ if wm_ok; then
 		# geometry for --resize: icon center, top edge, cell size, output span
 		read -r ox ow < <("$msg" -t get_outputs | jq -r 'first(.[] | select(.focused)) | "\(.rect.x) \(.rect.width)"')
 		echo "$((x + w / 2)) $top $((w / cols)) $((h / rows)) $ox $ow" >"$(geom_file "$app_id")"
+
+		# close on click outside: focus moving to another window or workspace closes the menu.
+		# focus_follows_mouse would move focus on mere hover, so it is off while the menu is
+		# open (restored below). Clicking the waybar icon again still toggles it (pkill above).
+		ffm=$("$msg" -t get_config | jq -r .config |
+			awk '$1 == "focus_follows_mouse" {v = $2} END {print (v ? v : "yes")}')
+		"$msg" focus_follows_mouse no >/dev/null
+		trap '"$msg" focus_follows_mouse "$ffm" >/dev/null 2>&1' EXIT
+		# own process group, so the subscription is cleaned up with it
+		# shellcheck disable=SC2016 # expanded by the inner bash
+		setsid bash -c '
+			"$1" -t subscribe -m "[\"window\",\"workspace\"]" |
+				jq --unbuffered -r "select(.change == \"focus\") | (.container.app_id // .current.type // \"other\")" |
+				while read -r a; do [ "$a" = "$2" ] || { kill "$3" 2>/dev/null; break; }; done
+		' _ "$msg" "$app_id" "$kitty_pid" &
+		watch_pgid=$!
 	fi
 fi
 
 wait "$kitty_pid" || true
+[ -n "${watch_pgid:-}" ] && kill -- "-$watch_pgid" 2>/dev/null
 rm -f "$(geom_file "$app_id")"
