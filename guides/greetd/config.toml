@@ -1,0 +1,10 @@
+# /etc/greetd/config.toml (copy of the deployed file; install with install.sh)
+[terminal]
+# tty1 gets boot/systemd status output (e.g. pacrunner spam); keep the greeter on its own VT.
+vt = 2
+
+[default_session]
+# ReGreet (GTK login screen) inside a minimal Hyprland; sessions come from
+# /usr/share/wayland-sessions, picked from ReGreet's dropdown and remembered per user.
+command = "start-hyprland -- --config /etc/greetd/hyprland.lua"
+user = "greeter"

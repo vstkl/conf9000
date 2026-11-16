@@ -45,3 +45,7 @@ local exec_once = user_startup_helper.exec_once
 -- Examples:
 -- exec_once("blueman-applet")
 -- exec_once("$HOME/.config/hypr/UserScripts/RainbowBorders.sh")
+
+-- conf9000 2026-11-16: KoolDots' WallpaperDaemon.sh needs awww (not installed);
+-- fall back to hyprpaper (hyprpaper.conf -> wallpaper_effects/.wallpaper_current).
+exec_once("command -v awww-daemon >/dev/null 2>&1 || hyprpaper")

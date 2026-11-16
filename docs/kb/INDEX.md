@@ -35,6 +35,7 @@ Caveat: the dir loop also links `docs/`, `testenv/`, `Signal/`, `Bitwarden/`, `m
 | `recreate-environment.sh after-install.sh install_optdeps.sh packages failed-packages.log` | bootstrap | bootstrap.md |
 | `refind/refind-efifetch/` | rEFInd theme (vendored, no submodule) | bootstrap.md#refind |
 | `guides/` | how-to notes/scripts (not deployed) | guides.md |
+| `guides/greetd/` | greetd login screen: ReGreet in a minimal Hyprland (`install.sh` → /etc/greetd) | PROGRESS.md 2026-11-16 |
 | `ardour8 corectrl easyeffects kicad lsp-plugins neofetch ventoy …` | app configs | apps.md |
 | `Bitwarden Signal mozilla gh github-copilot evolution pulse ibus …` | app STATE, secrets | SENSITIVE.md |
 | `docs/` | PROGRESS.md + this KB | — |

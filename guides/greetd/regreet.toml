@@ -1,0 +1,7 @@
+# /etc/greetd/regreet.toml
+[GTK]
+application_prefer_dark_theme = true
+
+[commands]
+reboot = ["systemctl", "reboot"]
+poweroff = ["systemctl", "poweroff"]

@@ -48,3 +48,12 @@ local apply_window_rule = user_window_rules_helper.apply_window_rule
 --   float = true,
 --   center = true,
 -- })
+
+-- conf9000 2026-11-16: ignore maximize requests from apps (Hyprland's stock default).
+-- Without it kitty asks to be maximized on open, so every floating window (incl. the
+-- Dropterminal scratchpad) ended up maximized and could not be pinned/moved/resized.
+hl.window_rule({
+  name = "suppress-maximize-events",
+  match = { class = ".*" },
+  suppress_event = "maximize",
+})
